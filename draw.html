@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>canvas</title>
+
+    <meta name="viewport" id="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+    <p>origin image:</p>
+    <img id="J_img" />
+    <hr />
+    <p>draw to canvas:</p>
+    <canvas id="J_canvas"></canvas>
+    <hr />
+    <p>output with dataURL:</p>
+    <img id="J_img_out_1" />
+    <hr />
+    <p>output with blob:</p>
+    <img id="J_img_out_2" />
+
+    <script>
+        var img = document.querySelector('#J_img')
+        var img_out_1 = document.querySelector('#J_img_out_1')
+        var img_out_2 = document.querySelector('#J_img_out_2')
+        var canvas = document.querySelector('#J_canvas')
+        var ctx = J_canvas.getContext('2d')
+        var src = 'http://img3.tuniucdn.com/u/mainpic/logo/logo_20170124.png'
+
+        img.crossOrigin = "anonymous"
+        img.onload = function () {
+            canvas.width = img.width
+            canvas.height = img.height
+            ctx.drawImage(img, 0, 0)
+
+            img_out_1.src = canvas.toDataURL('image/png')
+
+            canvas.toBlob(function (blob) {
+                var url = URL.createObjectURL(blob);
+
+                img_out_2.onload = function () {
+                    // no longer need to read the blob so it's revoked
+                    URL.revokeObjectURL(url);
+                };
+
+                img_out_2.src = url;
+            });
+        }
+        img.src = src
+
+        if (img.complete || img.complete === undefined) {
+            img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+            img.src = src;
+        }
+
+    </script>
+</body>
+
+</html>
