@@ -1,0 +1,41 @@
+name: Manual build
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'work branch'
+        default: 'development'
+        required: true
+      package:
+        description: 'build package'
+        default: 'legend-spa'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'yarn'
+      - name: diff-index
+        id: diffindex
+        run: git diff-index HEAD --quiet
+        continue-on-error: true
+      - name: push
+        if: ${{ steps.diffindex.outcome != 'success' }}
+        env:
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          echo ${{ steps.diffindex.outcome }}
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "build" -m "from: <$WORKFLOW_NAME>"
+          git push
