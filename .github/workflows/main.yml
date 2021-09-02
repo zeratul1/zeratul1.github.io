@@ -31,7 +31,7 @@ jobs:
         run: git diff-index HEAD --quiet
         continue-on-error: true
       - name: commit
-        if: ${{ steps.diffindex.outcome != 'success' }}
+        if: ${{ steps.diffindex.outcome == 'failure' }}
         env:
           WORKFLOW_NAME: ${{ github.workflow }}
         run: |
@@ -40,3 +40,4 @@ jobs:
           git config user.email github-actions@github.com
           git add .
           git commit -m "build" -m "from: <$WORKFLOW_NAME>"
+          git push
