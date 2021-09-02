@@ -1,12 +1,14 @@
 name: Auto build
 
 env:
- PACKAGE_NAME: '.'
+ PACKAGE_NAME: 'lib'
 
 on:
   push:
     branches: 
       - development
+    paths:
+      - 'lib/**'
 
 jobs:
   build:
