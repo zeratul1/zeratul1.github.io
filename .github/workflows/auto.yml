@@ -1,0 +1,43 @@
+name: Auto build
+
+env:
+ PATH: '.'
+
+on:
+  push:
+    branches: 
+      - development
+    paths: 
+      - '${{ env.PATH }}'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.base_ref }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+      - name: build
+        run: |
+          echo ${{ env.PATH }}
+          npm install octokit
+      - name: diff-index
+        id: diffindex
+        run: git diff-index HEAD --quiet
+        continue-on-error: true
+      - name: commit
+        if: ${{ steps.diffindex.outcome == 'failure' }}
+        env:
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          echo ${{ steps.diffindex.outcome }}
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "build" -m "from: <$WORKFLOW_NAME>"
+          git push
