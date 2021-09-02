@@ -24,11 +24,13 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
+      - name: build
+        run: npm install octokit
       - name: diff-index
         id: diffindex
         run: git diff-index HEAD --quiet
         continue-on-error: true
-      - name: push
+      - name: commit
         if: ${{ steps.diffindex.outcome != 'success' }}
         env:
           WORKFLOW_NAME: ${{ github.workflow }}
@@ -38,4 +40,3 @@ jobs:
           git config user.email github-actions@github.com
           git add .
           git commit -m "build" -m "from: <$WORKFLOW_NAME>"
-          git push
