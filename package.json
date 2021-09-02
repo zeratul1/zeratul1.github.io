@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/zeratul1/zeratul1.github.io/issues"
   },
-  "homepage": "https://github.com/zeratul1/zeratul1.github.io#readme"
+  "homepage": "https://github.com/zeratul1/zeratul1.github.io#readme",
+  "dependencies": {
+    "octokit": "^1.5.0"
+  }
 }
