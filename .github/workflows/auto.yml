@@ -1,12 +1,14 @@
 name: Auto build
 
 env:
- PATH: '.'
+ PACKAGE_NAME: '.'
 
 on:
   push:
     branches: 
       - development
+    paths: 
+      - '${{ env.PACKAGE_NAME }}'
 
 jobs:
   build:
@@ -15,16 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: development
+          ref: ${{ github.ref }}
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
           cache: 'npm'
       - name: build
         run: |
+          echo ${{ env.PACKAGE_NAME }}
           echo ${{ github.ref }}
           echo ${{ github.base_ref }}
-          echo ${{ env.PATH }}
           npm install octokit
       - name: diff-index
         id: diffindex
