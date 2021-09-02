@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-          cache: 'yarn'
+          cache: 'npm'
       - name: diff-index
         id: diffindex
         run: git diff-index HEAD --quiet
