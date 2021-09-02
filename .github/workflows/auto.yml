@@ -15,13 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref }}
+          ref: development
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
           cache: 'npm'
       - name: build
         run: |
+          echo ${{ github.ref }}
+          echo ${{ github.base_ref }}
           echo ${{ env.PATH }}
           npm install octokit
       - name: diff-index
