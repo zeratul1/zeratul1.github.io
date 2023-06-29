@@ -15,8 +15,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+    env:
+      HOST_NAME: Earthly
     steps:
+      - name: Print host name
+        run: echo "Host $HOST_NAME"
+      - name: Print homepage URL
+        run: echo "Host https://$HOST_NAME.dev"
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.inputs.branch }}
@@ -41,9 +46,3 @@ jobs:
           git add .
           git commit -m "build" -m "from: <$WORKFLOW_NAME>"
           git push
-      - name: Print host name
-        run: echo "Host $HOST_NAME"
-        env:
-          HOST_NAME: Earthly
-      - name: Print homepage URL
-        run: echo "Host https://$HOST_NAME.dev"
