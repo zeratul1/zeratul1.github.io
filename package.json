@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/zeratul1/zeratul1.github.io#readme",
   "dependencies": {
-    "octokit": "^1.5.0"
+    "octokit": "^1.8.1"
   }
 }
